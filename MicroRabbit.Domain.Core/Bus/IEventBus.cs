@@ -15,7 +15,7 @@ namespace MicroRabbit.Domain.Core.Bus
         void Publish<T>(T @event) where T : Event;
 
         void Subscribe<T, TH>()
-            where T : EventArgs 
+            where T : Event
             where TH : IEventHandler<T>;
     }
 }
