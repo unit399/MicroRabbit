@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using MicroRabbit.Banking.Application.Interfaces;
 using MicroRabbit.Banking.Application.Models;
 using MicroRabbit.Banking.Domain.Models;

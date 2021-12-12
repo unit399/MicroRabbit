@@ -1,6 +1,3 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
-
 namespace MicroRabbit.Banking.Api
 {
     public class Program

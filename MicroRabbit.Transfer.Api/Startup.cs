@@ -1,10 +1,13 @@
 ﻿using MediatR;
-using MicroRabbit.Banking.Data.Context;
 using MicroRabbit.Infra.IoC;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using MicroRabbit.Transfer.Data.Context;
+using MicroRabbit.Domain.Core.Bus;
+using MicroRabbit.Transfer.Domain.EventHandlers;
+using MicroRabbit.Transfer.Domain.Events;
 
-namespace MicroRabbit.Banking.Api
+namespace MicroRabbit.Transfer.Api
 {
     public class Startup
     {
@@ -23,7 +26,7 @@ namespace MicroRabbit.Banking.Api
             services.AddSwaggerGen(options => {
                 options.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Banking Microservice",
+                    Title = "Transfer Microservice",
                     Version = "v1",
                     Contact = new OpenApiContact
                     {
@@ -38,8 +41,8 @@ namespace MicroRabbit.Banking.Api
 
             RegisterServices(services);
 
-            services.AddDbContext<BankingDbContext>(options => {
-                options.UseSqlServer(Configuration.GetConnectionString("BankingDbConnection"), x => x.MigrationsAssembly("MicroRabbit.Banking.Api"));
+            services.AddDbContext<TransferDbContext>(options => {
+                options.UseSqlServer(Configuration.GetConnectionString("TransferDbConnection"), x => x.MigrationsAssembly("MicroRabbit.Transfer.Api"));
             });           
         }
 
@@ -64,11 +67,19 @@ namespace MicroRabbit.Banking.Api
             app.UseAuthorization();
             app.UseSwagger();
             app.UseSwaggerUI(options => {
-                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Banking Microservice v1");
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Transfer Microservice v1");
             });
             app.UseEndpoints(endpoints => {
                 endpoints.MapControllers();
             });
+
+            ConfigueEventBus(app);
+        }
+
+        private static void ConfigueEventBus(IApplicationBuilder app)
+        {
+            var eventBus = app.ApplicationServices.GetRequiredService<IEventBus>();
+            eventBus.Subscribe<TransferCreatedEvent, TransferEventHandler>();
         }
     }
 }

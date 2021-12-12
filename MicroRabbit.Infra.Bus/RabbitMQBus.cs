@@ -5,11 +5,7 @@ using MicroRabbit.Domain.Core.Events;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroRabbit.Infra.Bus
 {
@@ -93,7 +89,7 @@ namespace MicroRabbit.Infra.Bus
 
             channel.BasicConsume(eventName, true, consumer);
         }
-
+                                  
         private async Task Consumer_Received(object sender, BasicDeliverEventArgs e)
         {
             var eventName = e.RoutingKey;
